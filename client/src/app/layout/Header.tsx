@@ -1,7 +1,8 @@
-import { ShoppingCart } from "@mui/icons-material";
-import { AppBar, Badge, Box, IconButton, List, ListItem, Switch, Toolbar, Typography } from "@mui/material"
+import { ShoppingCart, WbSunnyOutlined, WbSunny } from "@mui/icons-material";
+import { AppBar, Badge, Box, IconButton, List, ListItem, Toolbar, Typography } from "@mui/material"
 import { Link, NavLink } from "react-router-dom";
 import { useAppSelector } from "../store/configureStore";
+import SignedInMenu from "./SignedInMenu";
 
 const midLinks = [
     { title: 'catalog', path: '/catalog' },
@@ -28,6 +29,8 @@ interface Props {
 }
 
 const Header = ({ darkMode, handleThemeChange }: Props) => {
+    const { user } = useAppSelector(state => state.account);
+
     const { basket } = useAppSelector(state => state.basket);
     const itemCount = basket?.items.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -36,7 +39,12 @@ const Header = ({ darkMode, handleThemeChange }: Props) => {
             <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Box display='flex' alignItems='center'>
                     <Typography sx={navStyles} component={NavLink} to='/'>RE-STORE</Typography>
-                    <Switch checked={darkMode} onChange={handleThemeChange} />
+                    {darkMode ? (
+                        <WbSunny onClick={handleThemeChange} sx={{ ml: 2, fontSize: 24, cursor: 'pointer' }} />
+                    ) : (
+                        <WbSunnyOutlined onClick={handleThemeChange} sx={{ ml: 2, fontSize: 24, cursor: 'pointer' }} />
+                    )}
+                    {/* <Switch checked={darkMode} onChange={handleThemeChange} /> */}
                 </Box>
                 <List sx={{ display: 'flex' }}>
                     {midLinks.map(({ title, path }) => (
@@ -49,11 +57,15 @@ const Header = ({ darkMode, handleThemeChange }: Props) => {
                             <ShoppingCart />
                         </Badge>
                     </IconButton>
-                    <List sx={{ display: 'flex' }}>
-                        {rightLinks.map(({ title, path }) => (
-                            <ListItem sx={navStyles} key={path} component={NavLink} to={path}>{title.toUpperCase()}</ListItem>
-                        ))}
-                    </List>
+                    {user ? (
+                        <SignedInMenu />
+                    ) : (
+                        <List sx={{ display: 'flex' }}>
+                            {rightLinks.map(({ title, path }) => (
+                                <ListItem sx={navStyles} key={path} component={NavLink} to={path}>{title.toUpperCase()}</ListItem>
+                            ))}
+                        </List>
+                    )}
                 </Box>
             </Toolbar>
         </AppBar>

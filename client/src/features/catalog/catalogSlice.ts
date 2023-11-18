@@ -101,8 +101,7 @@ export const catalogSlice = createSlice({
         }
     },
     extraReducers: (builder => {
-        builder.addCase(fetchProducts.pending, (state, action) => {
-            console.log(action.payload);
+        builder.addCase(fetchProducts.pending, (state) => {
             state.status = 'pendingFetchProducts';
         });
         builder.addCase(fetchProducts.fulfilled, (state, action) => {
@@ -110,24 +109,20 @@ export const catalogSlice = createSlice({
             state.status = 'idle';
             state.productsLoaded = true;
         });
-        builder.addCase(fetchProducts.rejected, (state, action) => {
-            console.log(action.payload);
+        builder.addCase(fetchProducts.rejected, (state) => {
             state.status = 'idle';
         });
-        builder.addCase(fetchProduct.pending, (state, action) => {
-            console.log(action.payload);
+        builder.addCase(fetchProduct.pending, (state) => {
             state.status = 'pendingFetchProduct';
         });
         builder.addCase(fetchProduct.fulfilled, (state, action) => {
             productsAdapter.upsertOne(state, action.payload);
             state.status = 'idle';
         });
-        builder.addCase(fetchProduct.rejected, (state, action) => {
-            console.log(action.payload);
+        builder.addCase(fetchProduct.rejected, (state) => {
             state.status = 'idle';
         });
-        builder.addCase(fetchFilters.pending, (state, action) => {
-            console.log(action.payload);
+        builder.addCase(fetchFilters.pending, (state) => {
             state.status = 'pendingFetchFilters';
         });
         builder.addCase(fetchFilters.fulfilled, (state, action) => {
@@ -136,8 +131,7 @@ export const catalogSlice = createSlice({
             state.filtersLoaded = true;
             state.status = 'idle';
         });
-        builder.addCase(fetchFilters.rejected, (state, action) => {
-            console.log(action.payload);
+        builder.addCase(fetchFilters.rejected, (state) => {
             state.status = 'idle';
         });
     })
